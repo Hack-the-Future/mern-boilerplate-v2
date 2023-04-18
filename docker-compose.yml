@@ -8,8 +8,9 @@ services:
         - REACT_APP_SERVER_URL=
     environment:
       NODE_ENV: production
+      # add additional environment variables
     ports:
-      - $CLIENT_PORT:80
+      - ${CLIENT_PORT}:80
     depends_on:
       - server
     networks:
@@ -20,16 +21,17 @@ services:
     build:
       context: ./server
     ports:
-      - $SERVER_PORT:8080
+      - ${SERVER_PORT}:8080
     environment:
       NODE_ENV: production
       MONGO_URI: mongodb://mongo:27017/mern-boilerplate
       CLIENT_URL:
-      SESSION_SECRET:
-      JWT_SECRET:
-      REFRESH_TOKEN_SECRET:
-      SESSION_EXPIRY:
-      REFRESH_TOKEN_EXPIRY:
+      SESSION_SECRET: ${SESSION_SECRET}
+      JWT_SECRET: ${JWT_SECRET}
+      REFRESH_TOKEN_SECRET: ${REFRESH_TOKEN_SECRET}
+      SESSION_EXPIRY: ${SESSION_EXPIRY}
+      REFRESH_TOKEN_EXPIRY: ${REFRESH_TOKEN_EXPIRY}
+      # add additional environment variables
     depends_on:
       - mongo
     networks:
@@ -38,9 +40,8 @@ services:
 
   mongo:
     image: mongo:latest
-    # When deploying, each project will have its own MongoDB port
-    #ports:
-    #  - $DB_PORT:27017
+    ports:
+      - $DB_PORT:27017
     volumes:
       - mongo-data:/data/db
     networks:
